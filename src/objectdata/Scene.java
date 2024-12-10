@@ -20,13 +20,33 @@ public class Scene {
         return objects;
     }
 
-    public void translateAllObjects (float scale, AxisEnum axis) {
+    public void translateAllObjects(float scale, AxisEnum axis) {
         for (int i = 0; i < objects.size(); i++) {
             Object3D object = objects.get(i);
+            if (!object.isCanBeMoved()) {
+                continue;
+            }
+
             object = object.translate(
                     axis == AxisEnum.X ? scale : 0,
                     axis == AxisEnum.Y ? scale : 0,
                     axis == AxisEnum.Z ? scale : 0);
+            objects.set(i, object);
+        }
+    }
+
+    public void rotateAllObjects(float angle, AxisEnum axis) {
+        for (int i = 0; i < objects.size(); i++) {
+            Object3D object = objects.get(i);
+            if (!object.isCanBeMoved()) {
+                continue;
+            }
+
+            object = switch (axis) {
+                case X -> object.rotate(angle, AxisEnum.X);
+                case Y -> object.rotate(angle, AxisEnum.Y);
+                case Z -> object.rotate(angle, AxisEnum.Z);
+            };
             objects.set(i, object);
         }
     }

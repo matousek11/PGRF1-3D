@@ -36,4 +36,32 @@ public class Vertex extends Point3D {
     public Vertex translate(double dx, double dy, double dz) {
         return new Vertex(super.getX() + dx, super.getY() + dy, super.getZ() + dz);
     }
+
+    public Vertex rotateX(double angle) {
+        return new Vertex(
+                super.getX(),
+                Math.cos(angle) * super.getY() - Math.sin(angle) * super.getZ(),
+                Math.sin(angle) * super.getY() + Math.cos(angle) * super.getZ()
+        );
+    }
+
+    public Vertex rotateY(double angle) {
+        return new Vertex(
+                Math.cos(angle) * super.getX() + Math.sin(angle) * super.getZ(),
+                super.getY(),
+                -Math.sin(angle) * super.getX() + Math.cos(angle) * super.getZ()
+        );
+    }
+
+    public Vertex rotateZ(double angle) {
+        return new Vertex(
+                Math.cos(angle) * super.getX() - Math.sin(angle) * super.getY(),
+                Math.sin(angle) * super.getX() + Math.cos(angle) * super.getY(),
+                super.getZ()
+        );
+    }
+
+    public Vertex scale(double scale) {
+        return new Vertex(super.getX() * scale, super.getY() * scale, super.getZ() * scale);
+    }
 }

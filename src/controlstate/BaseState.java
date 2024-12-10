@@ -37,10 +37,11 @@ public class BaseState implements State {
         renderer3DLine = new Renderer3DLine();
         scene.addObject(new Cube());
         scene.addObject(new Pyramid());
-        // axes
-        scene.addObject(new Line(new Vertex(0, 0, 0), new Vertex(3, 0, 0), 0xff0000));
-        scene.addObject(new Line(new Vertex(0, 0, 0), new Vertex(0, 3, 0), 0x00ff00));
-        scene.addObject(new Line(new Vertex(0, 0, 0), new Vertex(0, 0, 3), 0x0000ff));
+
+        // axis
+        scene.addObject(new Line(new Vertex(0, 0, 0), new Vertex(3, 0, 0), 0xff0000, false));
+        scene.addObject(new Line(new Vertex(0, 0, 0), new Vertex(0, 3, 0), 0x00ff00, false));
+        scene.addObject(new Line(new Vertex(0, 0, 0), new Vertex(0, 0, 3), 0x0000ff, false));
 
         Vec3D observerPosition = new Vec3D(3.5, 2, 3);
         this.camera = new Camera()
@@ -98,6 +99,16 @@ public class BaseState implements State {
             case KeyEvent.VK_DOWN:
                 // closer
                 scene.translateAllObjects(moveSpeed, AxisEnum.Y);
+                repaintObjects(objects);
+                break;
+            case KeyEvent.VK_Q:
+                // rotate to the left
+                scene.rotateAllObjects(moveSpeed, AxisEnum.Z);
+                repaintObjects(objects);
+                break;
+            case KeyEvent.VK_E:
+                // rotate to the right
+                scene.rotateAllObjects(-moveSpeed, AxisEnum.Z);
                 repaintObjects(objects);
                 break;
         }
