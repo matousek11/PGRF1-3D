@@ -111,6 +111,16 @@ public class BaseState implements State {
                 scene.rotateAllObjects(-moveSpeed, AxisEnum.Z);
                 repaintObjects(objects);
                 break;
+            case KeyEvent.VK_R:
+                // scale up
+                scene.scaleAllObjects(1.1F);
+                repaintObjects(objects);
+                break;
+            case KeyEvent.VK_F:
+                // scale down
+                scene.scaleAllObjects(0.9F);
+                repaintObjects(objects);
+                break;
         }
     }
 

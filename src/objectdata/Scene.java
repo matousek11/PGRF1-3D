@@ -50,4 +50,16 @@ public class Scene {
             objects.set(i, object);
         }
     }
+
+    public void scaleAllObjects(float scale) {
+        for (int i = 0; i < objects.size(); i++) {
+            Object3D object = objects.get(i);
+            if (!object.isCanBeMoved()) {
+                continue;
+            }
+
+            object = object.scale(scale);
+            objects.set(i, object);
+        }
+    }
 }
