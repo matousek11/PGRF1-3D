@@ -42,7 +42,7 @@ public class Canvas {
             }
         };
 
-        state = new Object3DState(raster, panel, liner);
+        state = new BaseState(raster, panel, liner);
 
         frame = new JFrame();
         frame.setLayout(new BorderLayout());

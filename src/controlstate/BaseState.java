@@ -1,5 +1,6 @@
 package controlstate;
 
+import enums.AxisEnum;
 import objectdata.*;
 import rasterdata.Raster;
 import rasterops.*;
@@ -23,6 +24,7 @@ public class BaseState implements State {
     protected Scene scene;
     protected Camera camera;
     private int x, y;
+    private final float moveSpeed = 0.2F;
     private final Renderer3DLine renderer3DLine;
 
 
@@ -77,6 +79,26 @@ public class BaseState implements State {
                 objects.clear();
                 clear();
                 panel.repaint();
+                break;
+            case KeyEvent.VK_LEFT:
+                // to the left
+                scene.translateAllObjects(-moveSpeed, AxisEnum.X);
+                repaintObjects(objects);
+                break;
+            case KeyEvent.VK_RIGHT:
+                // to the right
+                scene.translateAllObjects(moveSpeed, AxisEnum.X);
+                repaintObjects(objects);
+                break;
+            case KeyEvent.VK_UP:
+                // more far
+                scene.translateAllObjects(-moveSpeed, AxisEnum.Y);
+                repaintObjects(objects);
+                break;
+            case KeyEvent.VK_DOWN:
+                // closer
+                scene.translateAllObjects(moveSpeed, AxisEnum.Y);
+                repaintObjects(objects);
                 break;
         }
     }

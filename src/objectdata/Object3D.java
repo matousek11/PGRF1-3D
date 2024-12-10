@@ -1,7 +1,9 @@
 package objectdata;
 
 import transforms.Mat4;
+import transforms.Point3D;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Object3D {
@@ -37,5 +39,15 @@ public class Object3D {
 
     public int getColor() {
         return color;
+    }
+    public Object3D translate(double dx, double dy, double dz) {
+        ArrayList<Vertex> newVertexes = new ArrayList<>();
+
+        // Translate each point in the polygon by dx, dy and dz
+        for (Vertex vertex : vertexBuffer) {
+            newVertexes.add(vertex.translate(dx, dy, dz));
+        }
+
+        return new Object3D(newVertexes, indexBuffer, modelMat, color);
     }
 }

@@ -71,7 +71,6 @@ public class Renderer3DLine {
                                 1
                                 );
                         liner.draw(raster, line);
-                        System.out.println("is called");
                     });
                 });
             }

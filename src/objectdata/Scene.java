@@ -1,5 +1,7 @@
 package objectdata;
 
+import enums.AxisEnum;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,5 +18,16 @@ public class Scene {
 
     public List<Object3D> getObjects() {
         return objects;
+    }
+
+    public void translateAllObjects (float scale, AxisEnum axis) {
+        for (int i = 0; i < objects.size(); i++) {
+            Object3D object = objects.get(i);
+            object = object.translate(
+                    axis == AxisEnum.X ? scale : 0,
+                    axis == AxisEnum.Y ? scale : 0,
+                    axis == AxisEnum.Z ? scale : 0);
+            objects.set(i, object);
+        }
     }
 }

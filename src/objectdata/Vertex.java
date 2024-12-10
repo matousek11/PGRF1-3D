@@ -32,4 +32,8 @@ public class Vertex extends Point3D {
     public int getColor() {
         return color;
     }
+
+    public Vertex translate(double dx, double dy, double dz) {
+        return new Vertex(super.getX() + dx, super.getY() + dy, super.getZ() + dz);
+    }
 }
