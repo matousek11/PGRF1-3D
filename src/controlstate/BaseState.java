@@ -3,6 +3,7 @@ package controlstate;
 import enums.AxisEnum;
 import enums.DirectionEnum;
 import objectdata.*;
+import objectdata.CameraService;
 import rasterdata.Raster;
 import rasterops.*;
 import transforms.*;
@@ -10,71 +11,58 @@ import transforms.*;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
 /**
  * Base class for new control state implementation
  */
-public class BaseState implements State {
+public class BaseState implements Animate, State {
     protected JPanel panel;
     protected Raster raster;
     protected Liner liner;
     protected int defaultBgColor = 0x000000;
     protected Scene scene;
-    protected Camera camera;
+    protected CameraService cameraService;
     private int x, y;
-    private final float moveSpeed = 0.2F;
+    protected final float moveSpeed = 0.2F;
     private final Renderer3DLine renderer3DLine;
-    protected DirectionEnum observerMoveDirection = DirectionEnum.NONE;
+    private DirectionEnum observerMoveDirection = DirectionEnum.NONE;
+    private boolean isRotating = false;
 
 
-    public BaseState(Raster raster, JPanel panel, Liner liner) {
+    public BaseState(Raster raster, JPanel panel, Liner liner, Vec3D cameraStartingPosition) {
         this.raster = raster;
         this.panel = panel;
         this.liner = liner;
         scene = new Scene();
-
-        Timer moveTimer = new Timer(17, e -> {
-            try {
-                moveCamera();
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-        moveTimer.start();
-
         renderer3DLine = new Renderer3DLine();
-        scene.addObject(new Cube());
-        scene.addObject(new Pyramid());
+
+        // position for ortho
+        //observerPosition = new Vec3D(0, 0, 0);
+        this.cameraService = new CameraService(cameraStartingPosition);
+
 
         // axis
         scene.addObject(new Line(new Vertex(0, 0, 0), new Vertex(3, 0, 0), 0xff0000, false));
         scene.addObject(new Line(new Vertex(0, 0, 0), new Vertex(0, 3, 0), 0x00ff00, false));
         scene.addObject(new Line(new Vertex(0, 0, 0), new Vertex(0, 0, 3), 0x0000ff, false));
-
-        Vec3D observerPosition = new Vec3D(3.5, 2, 3);
-        this.camera = new Camera()
-                .withPosition(observerPosition)
-                .withAzimuth(azimuthToOrigin(observerPosition))
-                .withZenith(-zenithToOrigin(observerPosition));
     }
 
     @Override
-    public void mousePressed(MouseEvent e, ArrayList<Object> objects) throws Exception {
+    public void mousePressed(MouseEvent e) throws Exception {
         x = e.getX();
         y = e.getY();
     }
 
     @Override
-    public void mouseReleased(MouseEvent e, ArrayList<Object> objects) throws Exception {
+    public void mouseReleased(MouseEvent e) throws Exception {
 
     }
 
     @Override
-    public void mouseDragged(MouseEvent e, ArrayList<Object> objects) throws Exception {
+    public void mouseDragged(MouseEvent e) throws Exception {
         double dx = x - e.getX();
         double dy = y - e.getY();
-        camera = camera.addAzimuth(dx / 100).addZenith(dy / 100);
+        cameraService.changeCameraView(dx, dy);
         repaintObjects();
         panel.repaint();
 
@@ -83,10 +71,9 @@ public class BaseState implements State {
     }
 
     @Override
-    public void keyPressed(KeyEvent e, ArrayList<Object> objects) throws Exception {
+    public void keyPressed(KeyEvent e) throws Exception {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_C:
-                objects.clear();
                 clear();
                 panel.repaint();
                 break;
@@ -144,11 +131,17 @@ public class BaseState implements State {
             case KeyEvent.VK_CONTROL:
                 observerMoveDirection = DirectionEnum.DOWN;
                 break;
+            case KeyEvent.VK_I:
+                isRotating = !isRotating;
+                break;
+            case KeyEvent.VK_X:
+                repaintObjects();
+                break;
         }
     }
 
     @Override
-    public void keyReleased(KeyEvent e, ArrayList<Object> objects) {
+    public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W,
                  KeyEvent.VK_S,
@@ -161,21 +154,8 @@ public class BaseState implements State {
         }
     }
 
-    private void moveCamera() throws Exception {
-        if (observerMoveDirection == DirectionEnum.NONE) {
-            return;
-        }
-
-        camera = switch(observerMoveDirection) {
-            case DirectionEnum.FORWARD -> camera.forward(moveSpeed);
-            case DirectionEnum.BACKWARD -> camera.backward(moveSpeed);
-            case DirectionEnum.LEFT -> camera.left(moveSpeed);
-            case DirectionEnum.RIGHT -> camera.right(moveSpeed);
-            case DirectionEnum.UP -> camera.up(moveSpeed);
-            case DirectionEnum.DOWN -> camera.down(moveSpeed);
-            default -> throw new IllegalArgumentException("Should not reach here");
-        };
-
+    public void moveCamera() {
+        cameraService.moveCamera(observerMoveDirection);
         repaintObjects();
     }
 
@@ -193,7 +173,7 @@ public class BaseState implements State {
         renderer3DLine.renderScene(
                 scene,
                 raster,
-                camera.getViewMatrix(),
+                cameraService.getCamera().getViewMatrix(),
                 viewMat,
                 liner
         );
@@ -207,24 +187,8 @@ public class BaseState implements State {
         raster.clear(defaultBgColor);
     }
 
-    protected double zenithToOrigin(Vec3D observerPosition) {
-        Vec3D viewVector = observerPosition.opposite();
-        return viewVector
-                .normalized()
-                .map(normalizedViewVector -> {
-                    double alpha = normalizedViewVector.dot(new Vec3D(0,0,1));
-                    return Math.PI / 2 - alpha;
-                }).orElse(0.0);
-    }
+    @Override
+    public void animateObjects() {
 
-    protected double azimuthToOrigin(Vec3D observerPosition) {
-        Vec3D viewVector = observerPosition.opposite();
-        return viewVector
-                .withZ(0)
-                .normalized()
-                .map(viewProjection -> {
-                    double angle = Math.acos(viewProjection.dot(new Vec3D(0,0,1)));
-                    return (viewProjection.getY() > 0) ? angle : 2 * Math.PI - angle;
-                }).orElse(0.0);
     }
 }
