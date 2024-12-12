@@ -1,5 +1,6 @@
 import controlstate.*;
 
+import enums.StateEnum;
 import rasterdata.Raster;
 import rasterdata.RasterAdapter;
 import rasterops.DDALiner;
@@ -8,28 +9,32 @@ import rasterops.Liner;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.Serial;
-import java.util.ArrayList;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
 /**
  * Main class for painting on canvas
  */
 public class Canvas {
+    private final String applicationName = "UHK FIM PGRF 1 : Lukáš Matoušek";
     private final JFrame frame;
     private final JPanel panel;
     private final Raster raster;
     private final Liner liner;
-    private final ArrayList<Object> objects;
-    private State state;
+    private final HouseState houseState;
+    private final HouseStateWithCubic houseStateWithCubic;
+    private final RocketsState rocketsState;
+    private BaseState stateObject;
+    private StateEnum state = StateEnum.HOUSE;
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new Canvas(1500, 1000).start());
+    }
 
     public Canvas(int width, int height) {
-        liner = new DDALiner();
-        objects = new ArrayList<>();
         raster = new RasterAdapter(width, height);
+        liner = new DDALiner();
+        frame = new JFrame();
 
         panel = new JPanel() {
             @Serial
@@ -41,20 +46,61 @@ public class Canvas {
                 raster.present(g);
             }
         };
+        panel.setPreferredSize(new Dimension(width, height));
+        setUpJFrameElement();
+        registerListeners();
 
-        state = new BaseState(raster, panel, liner);
+        houseState = new HouseState(raster, panel, liner);
+        houseStateWithCubic = new HouseStateWithCubic(raster, panel, liner);
+        rocketsState = new RocketsState(raster, panel, liner);
+        stateObject = houseState;
 
-        frame = new JFrame();
+        Timer moveTimer = new Timer(17, e -> {
+            try {
+                stateObject.moveCamera();
+                stateObject.animateObjects();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        moveTimer.start();
+    }
+
+    public void start() {
+        panel.repaint();
+    }
+
+    private void switchState() {
+        state = state.nextState();
+        stateObject = switch (state) {
+            case HOUSE -> houseState;
+            case HOUSE_WITH_CUBIC -> houseStateWithCubic;
+            case ROCKETS -> rocketsState;
+        };
+    }
+
+    private void setUpJFrameElement() {
         frame.setLayout(new BorderLayout());
-        frame.setTitle("UHK FIM PGRF 1 : Lukáš Matoušek");
+        frame.setTitle(applicationName);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        frame.add(panel, BorderLayout.CENTER);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    private void registerListeners() {
         frame.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 try {
-                    state.keyPressed(e, objects);
+                    switch (e.getKeyCode()) {
+                        case KeyEvent.VK_X:
+                            switchState();
+                            break;
+                    }
+                    stateObject.keyPressed(e);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
@@ -62,7 +108,7 @@ public class Canvas {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                state.keyReleased(e, objects);
+                stateObject.keyReleased(e);
             }
         });
 
@@ -70,7 +116,7 @@ public class Canvas {
             @Override
             public void mousePressed(MouseEvent e) {
                 try {
-                    state.mousePressed(e, objects);
+                    stateObject.mousePressed(e);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
@@ -79,7 +125,7 @@ public class Canvas {
             @Override
             public void mouseReleased(MouseEvent e) {
                 try {
-                    state.mouseReleased(e, objects);
+                    stateObject.mouseReleased(e);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
@@ -90,25 +136,11 @@ public class Canvas {
             @Override
             public void mouseDragged(MouseEvent e) {
                 try {
-                    state.mouseDragged(e, objects);
+                    stateObject.mouseDragged(e);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
             }
         });
-
-        panel.setPreferredSize(new Dimension(width, height));
-
-        frame.add(panel, BorderLayout.CENTER);
-        frame.pack();
-        frame.setVisible(true);
-    }
-
-    public void start() {
-        panel.repaint();
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Canvas(1500, 1000).start());
     }
 }

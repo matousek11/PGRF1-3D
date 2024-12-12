@@ -54,6 +54,15 @@ public class Object3D {
     public boolean isCanBeMoved() {
         return canBeMoved;
     }
+
+    /**
+     * Returns new translated Object3D
+     *
+     * @param dx
+     * @param dy
+     * @param dz
+     * @return
+     */
     public Object3D translate(double dx, double dy, double dz) {
         ArrayList<Vertex> newVertexes = new ArrayList<>();
 
@@ -80,7 +89,6 @@ public class Object3D {
                 case X -> translatedToOrigin.rotateX(angle);
                 case Y -> translatedToOrigin.rotateY(angle);
                 case Z -> translatedToOrigin.rotateZ(angle);
-                default -> throw new IllegalArgumentException("Invalid rotation axis");
             };
 
             newVertexes.add(new Vertex(
