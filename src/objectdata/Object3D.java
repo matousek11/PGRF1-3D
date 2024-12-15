@@ -68,6 +68,10 @@ public class Object3D implements Object {
         return canBeMoved;
     }
 
+    public boolean isRotating() {
+        return isRotating;
+    }
+
     /**
      * Returns new translated Object3D
      *
@@ -170,9 +174,5 @@ public class Object3D implements Object {
         Object3D newObject = new Object3D(this);
         newObject.color = newColor;
         return newObject;
-    }
-
-    public boolean isRotating() {
-        return isRotating;
     }
 }
