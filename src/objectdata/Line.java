@@ -1,5 +1,6 @@
 package objectdata;
 
+import transforms.Mat4;
 import transforms.Mat4Identity;
 
 import java.util.List;
@@ -16,5 +17,14 @@ public class Line extends Object3D {
                 color,
                 canBeMoved
         );
+    }
+
+    public Line(List<Vertex> vertexBuffer, int color, boolean canBeMoved, Mat4 modelMat) {
+        super(vertexBuffer, List.of(0,1), modelMat, color, canBeMoved);
+    }
+
+    @Override
+    public Object3D withColor(int newColor) {
+        return new Line(this.getVertexBuffer(), newColor, this.canBeMoved, this.getModelMat());
     }
 }

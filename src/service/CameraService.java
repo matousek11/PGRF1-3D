@@ -1,4 +1,4 @@
-package objectdata;
+package service;
 
 import enums.DirectionEnum;
 import transforms.Camera;
@@ -12,7 +12,7 @@ public class CameraService extends transforms.Camera {
         this.camera = new Camera()
                 .withPosition(observerPosition)
                 .withAzimuth(azimuthToOrigin(observerPosition))
-                .withZenith(-zenithToOrigin(observerPosition));
+                .withZenith(zenithToOrigin(observerPosition));
     }
 
     public Camera getCamera() {
@@ -41,11 +41,10 @@ public class CameraService extends transforms.Camera {
 
     protected double zenithToOrigin(Vec3D observerPosition) {
         Vec3D viewVector = observerPosition.opposite();
-        return viewVector
+        return -viewVector
                 .normalized()
-                .map(normalizedViewVector -> {
-                    return Math.acos(normalizedViewVector.dot(new Vec3D(0, 0, 1)));
-                }).orElse(0.0);
+                .map(normalizedViewVector -> Math.acos(normalizedViewVector.dot(new Vec3D(0, 0, 1))) - Math.PI/2)
+                .orElse(0.0);
     }
 
     protected double azimuthToOrigin(Vec3D observerPosition) {

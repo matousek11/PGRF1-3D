@@ -7,12 +7,22 @@ import transforms.Point3D;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Object3D {
+public class Object3D implements Object {
     private final List<Vertex> vertexBuffer;
     private final List<Integer> indexBuffer;
     private final Mat4 modelMat;
     protected int color = 0xffffff;
     protected boolean canBeMoved = true;
+    protected boolean isRotating = false;
+
+    public Object3D(Object3D object) {
+        vertexBuffer = object.vertexBuffer;
+        indexBuffer = object.indexBuffer;
+        modelMat = object.modelMat;
+        color = object.color;
+        canBeMoved = object.canBeMoved;
+        isRotating = object.isRotating;
+    }
 
     public Object3D(List<Vertex> vertexBuffer, List<Integer> indexBuffer, Mat4 modelMat) {
         this.vertexBuffer = vertexBuffer;
@@ -71,7 +81,10 @@ public class Object3D {
             newVertexes.add(vertex.translate(dx, dy, dz));
         }
 
-        return new Object3D(newVertexes, indexBuffer, modelMat, color);
+        Object3D newObject = new Object3D(newVertexes, indexBuffer, modelMat, color);
+        newObject.isRotating = isRotating;
+
+        return newObject;
     }
 
     public Object3D rotate(double angle, AxisEnum rotationAxis) {
@@ -98,7 +111,10 @@ public class Object3D {
             ));
         }
 
-        return new Object3D(newVertexes, indexBuffer, modelMat, color);
+        Object3D newObject = new Object3D(newVertexes, indexBuffer, modelMat, color);
+        newObject.isRotating = isRotating;
+
+        return newObject;
     }
 
     public Object3D scale(double scale) {
@@ -121,7 +137,10 @@ public class Object3D {
             newVertexes.add(scaledVertex);
         }
 
-        return new Object3D(newVertexes, indexBuffer, modelMat, color);
+        Object3D newObject = new Object3D(newVertexes, indexBuffer, modelMat, color);
+        newObject.isRotating = isRotating;
+
+        return newObject;
     }
 
     public Point3D getObjectCenter() {
@@ -141,5 +160,16 @@ public class Object3D {
         double centerZ = sumZ / vertexBuffer.size();
 
         return new Point3D(centerX, centerY, centerZ);
+    }
+
+    @Override
+    public Object3D withColor(int newColor) {
+        Object3D newObject = new Object3D(this);
+        newObject.color = newColor;
+        return newObject;
+    }
+
+    public boolean isRotating() {
+        return isRotating;
     }
 }

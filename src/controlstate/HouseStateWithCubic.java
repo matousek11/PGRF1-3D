@@ -11,15 +11,16 @@ import transforms.Vec3D;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
+import java.util.Optional;
 
 public class HouseStateWithCubic extends BaseState {
-    private int numberOfPointsInCubic = 5;
+    private int numberOfPointsInCubic = 6;
 
     public HouseStateWithCubic(Raster raster, JPanel panel, Liner liner) {
         super(raster, panel, liner, new Vec3D(3.5, 2, 3));
 
         scene.addObject(new Cube());
-        scene.addObject(new Pyramid());
+        scene.addObject(new Pyramid(Optional.empty(), Optional.empty()));
 
         Point3D[] controlPoints = {
                 new Point3D(-1, -1, -1),
@@ -28,30 +29,13 @@ public class HouseStateWithCubic extends BaseState {
                 new Point3D(1, -1, 1)
         };
 
-        scene.addObject(new Curve(controlPoints, numberOfPointsInCubic, Cubic.BEZIER, 0x00ffff));
-        scene.addObject(new Curve(controlPoints, numberOfPointsInCubic, Cubic.COONS, 0xff00ff));
-        scene.addObject(new Curve(controlPoints, numberOfPointsInCubic, Cubic.FERGUSON,0x0000ff));
+        scene.addObject(new Curve(controlPoints, numberOfPointsInCubic, Cubic.BEZIER, 0x00ffff, Optional.empty()));
+        scene.addObject(new Curve(controlPoints, numberOfPointsInCubic, Cubic.COONS, 0xff00ff, Optional.empty()));
+        scene.addObject(new Curve(controlPoints, numberOfPointsInCubic, Cubic.FERGUSON,0x0000ff, Optional.empty()));
     }
 
     @Override
     public void keyPressed(KeyEvent e) throws Exception {
-        switch (e.getKeyCode()) {
-            /*case KeyEvent.VK_Z:
-                // less points in cubic
-                if (numberOfPointsInCubic > 0) {
-                    numberOfPointsInCubic--;
-                    repaintObjects();
-                }
-                break;
-            case KeyEvent.VK_U:
-                // more points in cubic
-                if (numberOfPointsInCubic < 500) {
-                    numberOfPointsInCubic++;
-                    repaintObjects();
-                }
-                break;*/
-        }
-
         super.keyPressed(e);
     }
 }

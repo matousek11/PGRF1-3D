@@ -7,12 +7,13 @@ import rasterops.Liner;
 import transforms.Vec3D;
 
 import javax.swing.*;
+import java.util.Optional;
 
 public class HouseState extends BaseState {
     public HouseState(Raster raster, JPanel panel, Liner liner) {
         super(raster, panel, liner, new Vec3D(3.5, 2, 3));
 
         scene.addObject(new Cube());
-        scene.addObject(new Pyramid());
+        scene.addObject(new Pyramid(Optional.empty(), Optional.empty()));
     }
 }

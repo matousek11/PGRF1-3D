@@ -3,7 +3,7 @@ package controlstate;
 import enums.AxisEnum;
 import enums.DirectionEnum;
 import objectdata.*;
-import objectdata.CameraService;
+import service.CameraService;
 import rasterdata.Raster;
 import rasterops.*;
 import transforms.*;
@@ -26,8 +26,7 @@ public class BaseState implements Animate, State {
     protected final float moveSpeed = 0.2F;
     private final Renderer3DLine renderer3DLine;
     private DirectionEnum observerMoveDirection = DirectionEnum.NONE;
-    private boolean isRotating = false;
-
+    private boolean isPerspectiveMat = true;
 
     public BaseState(Raster raster, JPanel panel, Liner liner, Vec3D cameraStartingPosition) {
         this.raster = raster;
@@ -36,10 +35,7 @@ public class BaseState implements Animate, State {
         scene = new Scene();
         renderer3DLine = new Renderer3DLine();
 
-        // position for ortho
-        //observerPosition = new Vec3D(0, 0, 0);
         this.cameraService = new CameraService(cameraStartingPosition);
-
 
         // axis
         scene.addObject(new Line(new Vertex(0, 0, 0), new Vertex(3, 0, 0), 0xff0000, false));
@@ -79,38 +75,38 @@ public class BaseState implements Animate, State {
                 break;
             case KeyEvent.VK_LEFT:
                 // to the left
-                scene.translateAllObjects(-moveSpeed, AxisEnum.X);
+                scene.translateObject(-moveSpeed, AxisEnum.X);
                 repaintObjects();
                 break;
             case KeyEvent.VK_RIGHT:
                 // to the right
-                scene.translateAllObjects(moveSpeed, AxisEnum.X);
+                scene.translateObject(moveSpeed, AxisEnum.X);
                 repaintObjects();
                 break;
             case KeyEvent.VK_UP:
                 // more far
-                scene.translateAllObjects(-moveSpeed, AxisEnum.Y);
+                scene.translateObject(-moveSpeed, AxisEnum.Y);
                 repaintObjects();
                 break;
             case KeyEvent.VK_DOWN:
                 // closer
-                scene.translateAllObjects(moveSpeed, AxisEnum.Y);
+                scene.translateObject(moveSpeed, AxisEnum.Y);
                 repaintObjects();
                 break;
             case KeyEvent.VK_Q:
-                scene.rotateAllObjects(moveSpeed, AxisEnum.Z);
+                scene.rotateObject(moveSpeed, AxisEnum.Z);
                 repaintObjects();
                 break;
             case KeyEvent.VK_E:
-                scene.rotateAllObjects(-moveSpeed, AxisEnum.Z);
+                scene.rotateObject(-moveSpeed, AxisEnum.Z);
                 repaintObjects();
                 break;
             case KeyEvent.VK_R:
-                scene.scaleAllObjects(1.1F);
+                scene.scaleObject(1.1F);
                 repaintObjects();
                 break;
             case KeyEvent.VK_F:
-                scene.scaleAllObjects(0.9F);
+                scene.scaleObject(0.9F);
                 repaintObjects();
                 break;
             case KeyEvent.VK_W:
@@ -132,9 +128,31 @@ public class BaseState implements Animate, State {
                 observerMoveDirection = DirectionEnum.DOWN;
                 break;
             case KeyEvent.VK_I:
-                isRotating = !isRotating;
+                scene.toggleRotation();
+                repaintObjects();
                 break;
             case KeyEvent.VK_X:
+                // change of scene
+                repaintObjects();
+                break;
+            case KeyEvent.VK_V:
+                // change of view mat
+                isPerspectiveMat = !isPerspectiveMat;
+                repaintObjects();
+                break;
+            case KeyEvent.VK_Y:
+                // select another object
+                scene.selectNextObject();
+                repaintObjects();
+                break;
+            case KeyEvent.VK_Z:
+                // less points in cubic
+                scene.changeCurveAccuracy(-1);
+                repaintObjects();
+                break;
+            case KeyEvent.VK_U:
+                // more points in cubic
+                scene.changeCurveAccuracy(1);
                 repaintObjects();
                 break;
         }
@@ -164,11 +182,9 @@ public class BaseState implements Animate, State {
      */
     protected void repaintObjects() {
         clear();
-        boolean isPerspectiveMat = true;
-        Mat4 secondView = new Mat4OrthoRH(panel.getWidth() * 0.01, panel.getHeight() * 0.01, 0.01, 25);
         Mat4 viewMat = isPerspectiveMat ?
                 new Mat4PerspRH(Math.PI / 2, (double) (raster.getWidth() / raster.getHeight()), 0.01, 20) :
-                secondView;
+                new Mat4OrthoRH(panel.getWidth() * 0.01, panel.getHeight() * 0.01, 0.01, 25);
 
         renderer3DLine.renderScene(
                 scene,
@@ -189,6 +205,7 @@ public class BaseState implements Animate, State {
 
     @Override
     public void animateObjects() {
-
+        scene.rotateAllApprovedObjects(0.01F, AxisEnum.Z);
+        repaintObjects();
     }
 }

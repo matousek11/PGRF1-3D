@@ -1,11 +1,13 @@
 package objectdata;
 
+import transforms.Mat4;
 import transforms.Mat4Identity;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Spaceship extends Object3D {
-    public Spaceship() {
+    public Spaceship(Optional<Mat4> modelMat, Optional<Integer> color) {
         super(
                 // vertex buffer
                 List.of(
@@ -165,7 +167,12 @@ public class Spaceship extends Object3D {
                         // Přistávací nohy
                         41,81, 43,82, 45,83, 47,84
                 ),
-                new Mat4Identity()
+                modelMat.orElseGet(Mat4Identity::new),
+                color.orElse(0xffffff)
         );
+    }
+
+    public Spaceship withColor(int newColor) {
+        return new Spaceship(Optional.of(this.getModelMat()), Optional.of(newColor));
     }
 }

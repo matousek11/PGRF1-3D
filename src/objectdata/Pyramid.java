@@ -1,11 +1,13 @@
 package objectdata;
 
+import transforms.Mat4;
 import transforms.Mat4Identity;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Pyramid extends Object3D {
-    public Pyramid() {
+    public Pyramid(Optional<Mat4> modelMat, Optional<Integer> color) {
         super(
                 List.of(
                         // bottom part of pyramid
@@ -26,7 +28,12 @@ public class Pyramid extends Object3D {
                         1,4,
                         3,4
                 ),
-                new Mat4Identity()
+                modelMat.orElseGet(Mat4Identity::new),
+                color.orElse(0xffffff)
         );
+    }
+
+    public Pyramid withColor(int newColor) {
+        return new Pyramid(Optional.of(this.getModelMat()), Optional.of(newColor));
     }
 }

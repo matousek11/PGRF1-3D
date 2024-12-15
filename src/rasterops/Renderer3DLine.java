@@ -9,6 +9,7 @@ import transforms.Point3D;
 import transforms.Vec2D;
 import models.Line;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // transformační řetězec - umístění objektu do scény (transformace)
@@ -21,7 +22,7 @@ import java.util.List;
 public class Renderer3DLine {
     public void renderScene(Scene scene, Raster raster, Mat4 viewMatrix, Mat4 projectionMatrix, Liner liner) {
         Mat4 viewProjectionMatrix = viewMatrix.mul(projectionMatrix);
-        List<Object3D> objects =  scene.getObjects();
+        ArrayList<Object3D> objects =  scene.getObjects();
         for (int i = 0; i < objects.size(); i++) {
             // 1. get object
             Object3D object = objects.get(i);

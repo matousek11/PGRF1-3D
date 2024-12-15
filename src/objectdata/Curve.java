@@ -7,25 +7,33 @@ import transforms.Point3D;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Curve extends Object3D {
-    public Curve(Point3D[] controlPoints, int numberOfPoints, Mat4 cubicMat, int color) {
+    private final Point3D[] controlPoints;
+    private final int numberOfPoints;
+    private final Mat4 cubicMat;
+
+    public Curve(Point3D[] controlPoints, int numberOfPoints, Mat4 cubicMat, int color, Optional<Mat4> modelMat) {
         super(
                 getBezierPoints(numberOfPoints, cubicMat, controlPoints),
                 getIndexVerticesByParameter(numberOfPoints),
-                new Mat4Identity(),
+                modelMat.orElseGet(Mat4Identity::new),
                 color
         );
+
+        this.controlPoints = controlPoints;
+        this.numberOfPoints = numberOfPoints;
+        this.cubicMat = cubicMat;
     }
 
     private static List<Vertex> getBezierPoints(int numberOfPoints, Mat4 cubicMat, Point3D[] controlPoints) {
         Cubic cubic = new Cubic(cubicMat, controlPoints);
-
         ArrayList<Vertex> calculatedPoints = new ArrayList<>();
-        double increment = (double) 1 / numberOfPoints;
 
-        for (double i = 0; i <= 1; i += increment) {
-            Point3D point = cubic.compute(i);
+        for (int i = 0; i <= numberOfPoints; i++) {  // <= aby zahrnul i koncový bod
+            double t = (double) i / numberOfPoints;
+            Point3D point = cubic.compute(t);
             calculatedPoints.add(new Vertex(point.getX(), point.getY(), point.getZ()));
         }
 
@@ -34,12 +42,34 @@ public class Curve extends Object3D {
 
     private static List<Integer> getIndexVerticesByParameter(int numberOfPoints) {
         ArrayList<Integer> indexVertices = new ArrayList<>();
-        double increment = (double) 1 / numberOfPoints;
-        for (double i = 0; i < numberOfPoints; i += increment) {
-            indexVertices.add((int) i);
-            indexVertices.add((int) i + 1);
+        for (int i = 0; i < numberOfPoints; i++) {
+            indexVertices.add(i);
+            indexVertices.add(i + 1);
+        }
+        return indexVertices;
+    }
+
+    @Override
+    public Curve withColor(int newColor) {
+        return new Curve(this.controlPoints, this.numberOfPoints, this.cubicMat, newColor, Optional.of(this.getModelMat()));
+    }
+
+    public Curve withNumberOfPointsDerivative(int numberOfNewPoints) {
+        int newNumberOfPoints = this.numberOfPoints + numberOfNewPoints;
+        if (1 > newNumberOfPoints) {
+            newNumberOfPoints = 1;
         }
 
-        return indexVertices;
+        if (25 < newNumberOfPoints) {
+            newNumberOfPoints = 25;
+        }
+
+        return new Curve(
+                this.controlPoints,
+                newNumberOfPoints,
+                this.cubicMat,
+                this.color,
+                Optional.of(this.getModelMat())
+        );
     }
 }

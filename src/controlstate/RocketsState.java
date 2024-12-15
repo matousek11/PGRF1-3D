@@ -9,6 +9,7 @@ import rasterops.Liner;
 import transforms.Vec3D;
 
 import javax.swing.*;
+import java.util.Optional;
 
 public class RocketsState extends BaseState {
     private int startTime = 0;
@@ -16,8 +17,8 @@ public class RocketsState extends BaseState {
     public RocketsState(Raster raster, JPanel panel, Liner liner) {
         super(raster, panel, liner, new Vec3D(2.5, 10, 6));
 
-        scene.addObject(new Spaceship());
-        scene.addObject(new Starship());
+        scene.addObject(new Spaceship(Optional.empty(), Optional.empty()));
+        scene.addObject(new Starship(Optional.empty(), Optional.empty()));
         scene.addObject(new Axe());
     }
 
@@ -26,7 +27,7 @@ public class RocketsState extends BaseState {
         scene.rotateAllObjects(0.01F, AxisEnum.Z);
         startTime++;
         if (startTime > 1000) {
-            scene.translateAllObjects(moveSpeed * ((float) startTime / 12000), AxisEnum.Z);
+            scene.translateAllObjects(moveSpeed * ((float) startTime / 6000), AxisEnum.Z);
         }
         repaintObjects();
     }
