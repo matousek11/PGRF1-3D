@@ -17,7 +17,7 @@ import java.util.Optional;
  * Scene with 3D house and cubic curves around.
  */
 public class HouseStateWithCubic extends BaseState {
-    private int numberOfPointsInCubic = 6;
+    private final int numberOfPointsInCubic = 6;
 
     public HouseStateWithCubic(Raster raster, JPanel panel, Liner liner) {
         super(raster, panel, liner, new Vec3D(3.5, 2, 3));

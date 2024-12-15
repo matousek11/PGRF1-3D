@@ -34,7 +34,7 @@ public class Curve extends Object3D {
         Cubic cubic = new Cubic(cubicMat, controlPoints);
         ArrayList<Vertex> calculatedPoints = new ArrayList<>();
 
-        for (int i = 0; i <= numberOfPoints; i++) {  // <= aby zahrnul i koncový bod
+        for (int i = 0; i <= numberOfPoints; i++) {
             double t = (double) i / numberOfPoints;
             Point3D point = cubic.compute(t);
             calculatedPoints.add(new Vertex(point.getX(), point.getY(), point.getZ()));

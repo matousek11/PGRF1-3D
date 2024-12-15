@@ -75,10 +75,10 @@ public class Object3D implements Object {
     /**
      * Returns new translated Object3D
      *
-     * @param dx
-     * @param dy
-     * @param dz
-     * @return
+     * @param dx how much will be object translated on X axis
+     * @param dy how much will be object translated on Y axis
+     * @param dz how much will be object translated on Z axis
+     * @return returns translated object
      */
     public Object3D translate(double dx, double dy, double dz) {
         ArrayList<Vertex> newVertexes = new ArrayList<>();

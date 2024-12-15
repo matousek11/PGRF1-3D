@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.Optional;
 
 /**
- * Represent a two dimensional grid with pixels of type int
+ * Represent a two-dimensional grid with pixels of type int
  */
 public interface Raster {
     /**

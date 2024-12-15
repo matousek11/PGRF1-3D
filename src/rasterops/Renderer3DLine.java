@@ -23,9 +23,8 @@ public class Renderer3DLine {
     public void renderScene(Scene scene, Raster raster, Mat4 viewMatrix, Mat4 projectionMatrix, Liner liner) {
         Mat4 viewProjectionMatrix = viewMatrix.mul(projectionMatrix);
         ArrayList<Object3D> objects =  scene.getObjects();
-        for (int i = 0; i < objects.size(); i++) {
+        for (Object3D object : objects) {
             // 1. get object
-            Object3D object = objects.get(i);
             Mat4 objectTransformationMatrix = object.getModelMat().mul(viewProjectionMatrix);
 
             // 2. transformations
@@ -44,36 +43,34 @@ public class Renderer3DLine {
                 // 4. clipping
                 if (
                         start.getX() < -start.getW() || start.getX() > start.getW() ||
-                        start.getY() < -start.getW() || start.getY() > start.getW() ||
-                        start.getZ() < 0 || start.getZ() > start.getW() ||
-                        end.getX() < -end.getW() || end.getX() > end.getW() ||
-                        end.getY() < -end.getW() || end.getY() > end.getW() ||
-                        end.getZ() < 0 || end.getZ() > end.getW()
+                                start.getY() < -start.getW() || start.getY() > start.getW() ||
+                                start.getZ() < 0 || start.getZ() > start.getW() ||
+                                end.getX() < -end.getW() || end.getX() > end.getW() ||
+                                end.getY() < -end.getW() || end.getY() > end.getW() ||
+                                end.getZ() < 0 || end.getZ() > end.getW()
                 ) {
                     continue;
                 }
 
                 // 5. dehomogenizace
-                start.dehomog().ifPresent(startPoint -> {
-                    end.dehomog().ifPresent(endPoint -> {
-                        // 6. 2D projection
-                        Vec2D first = startPoint.ignoreZ();
-                        Vec2D second = endPoint.ignoreZ();
+                start.dehomog().ifPresent(startPoint -> end.dehomog().ifPresent(endPoint -> {
+                    // 6. 2D projection
+                    Vec2D first = startPoint.ignoreZ();
+                    Vec2D second = endPoint.ignoreZ();
 
-                        // 7. Viewport transformation
-                        Vec2D firstInViewport = pointToViewport(raster, first);
-                        Vec2D secondInViewport = pointToViewport(raster, second);
+                    // 7. Viewport transformation
+                    Vec2D firstInViewport = pointToViewport(raster, first);
+                    Vec2D secondInViewport = pointToViewport(raster, second);
 
-                        // 8. Rasterization (liner.draw)
-                        Line line = new Line(
-                                new Point2D(firstInViewport.getX(), firstInViewport.getY()),
-                                new Point2D(secondInViewport.getX(), secondInViewport.getY()),
-                                object.getColor(),
-                                1
-                                );
-                        liner.draw(raster, line);
-                    });
-                });
+                    // 8. Rasterization (liner.draw)
+                    Line line = new Line(
+                            new Point2D(firstInViewport.getX(), firstInViewport.getY()),
+                            new Point2D(secondInViewport.getX(), secondInViewport.getY()),
+                            object.getColor(),
+                            1
+                    );
+                    liner.draw(raster, line);
+                }));
             }
         }
     }

@@ -16,12 +16,12 @@ import java.awt.event.MouseEvent;
  * Base class for new control state implementation
  */
 public class BaseState implements Animate, State {
-    protected JPanel panel;
-    protected Raster raster;
-    protected Liner liner;
-    protected int defaultBgColor = 0x000000;
-    protected Scene scene;
-    protected CameraService cameraService;
+    protected final JPanel panel;
+    protected final Raster raster;
+    protected final Liner liner;
+    protected final int defaultBgColor = 0x000000;
+    protected final Scene scene;
+    protected final CameraService cameraService;
     private int x, y;
     protected final float moveSpeed = 0.2F;
     private final Renderer3DLine renderer3DLine;
@@ -147,7 +147,7 @@ public class BaseState implements Animate, State {
                 repaintObjects();
                 break;
             case KeyEvent.VK_Z:
-                // less points in cubic
+                // fewer points in cubic
                 scene.changeCurveAccuracy(-1);
                 repaintObjects();
                 break;
