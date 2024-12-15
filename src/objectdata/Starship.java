@@ -11,10 +11,10 @@ public class Starship extends Object3D {
         super(
                 // vertex buffer
                 List.of(
-                        // Špička - jednodušší ale lépe tvarovaná
-                        new Vertex(4, 0, 8.5), // špička 0
+                        // tip
+                        new Vertex(4, 0, 8.5),
 
-                        // První kruh nosu (8 bodů)
+                        // first ring
                         new Vertex(4.05, 0, 8.3), // 1
                         new Vertex(4.035, 0.035, 8.3), // 2
                         new Vertex(4, 0.05, 8.3), // 3
@@ -24,7 +24,7 @@ public class Starship extends Object3D {
                         new Vertex(4, -0.05, 8.3), // 7
                         new Vertex(4.035, -0.035, 8.3), // 8
 
-                        // Druhý kruh nosu (8 bodů)
+                        // second ring
                         new Vertex(4.15, 0, 8), // 9
                         new Vertex(4.106, 0.106, 8), // 10
                         new Vertex(4, 0.15, 8), // 11
@@ -34,7 +34,7 @@ public class Starship extends Object3D {
                         new Vertex(4, -0.15, 8), // 15
                         new Vertex(4.106, -0.106, 8), // 16
 
-                        // Třetí kruh nosu - přechod do hlavní části (8 bodů)
+                        // third ring
                         new Vertex(4.25, 0, 7.5), // 17
                         new Vertex(4.18, 0.18, 7.5), // 18
                         new Vertex(4, 0.25, 7.5), // 19
@@ -44,7 +44,7 @@ public class Starship extends Object3D {
                         new Vertex(4, -0.25, 7.5), // 23
                         new Vertex(4.18, -0.18, 7.5), // 24
 
-                        // Hlavní trup - horní část (8 bodů)
+                        // top part of fuselage
                         new Vertex(4.5, 0, 6), // 25
                         new Vertex(4.35, 0.35, 6), // 26
                         new Vertex(4, 0.5, 6), // 27
@@ -54,7 +54,7 @@ public class Starship extends Object3D {
                         new Vertex(4, -0.5, 6), // 31
                         new Vertex(4.35, -0.35, 6), // 32
 
-                        // Střední část trupu (8 bodů)
+                        // middle part of fuselage
                         new Vertex(4.5, 0, 0), // 33
                         new Vertex(4.35, 0.35, 0), // 34
                         new Vertex(4, 0.5, 0), // 35
@@ -64,7 +64,7 @@ public class Starship extends Object3D {
                         new Vertex(4, -0.5, 0), // 39
                         new Vertex(4.35, -0.35, 0), // 40
 
-                        // Spodní část trupu (8 bodů)
+                        // bottom part of fuselage
                         new Vertex(4.5, 0, -3), // 41
                         new Vertex(4.35, 0.35, -3), // 42
                         new Vertex(4, 0.5, -3), // 43
@@ -74,35 +74,35 @@ public class Starship extends Object3D {
                         new Vertex(4, -0.5, -3), // 47
                         new Vertex(4.35, -0.35, -3), // 48
 
-                        // Přední flaps - detailní
-                        // Levý flap
+                        // front flaps
+                        // left flap
                         new Vertex(3.1, 0.2, 5), // 49
                         new Vertex(3.1, 0.5, 4.5), // 50
                         new Vertex(3.1, 0.6, 4), // 51
                         new Vertex(3.1, 0.5, 3.5), // 52
                         new Vertex(3.1, 0.2, 3), // 53
-                        // Pravý flap
+                        // right flap
                         new Vertex(4.9, 0.2, 5), // 54
                         new Vertex(4.9, 0.5, 4.5), // 55
                         new Vertex(4.9, 0.6, 4), // 56
                         new Vertex(4.9, 0.5, 3.5), // 57
                         new Vertex(4.9, 0.2, 3), // 58
 
-                        // Zadní flaps - detailní
-                        // Levý flap
+                        // back flaps
+                        // left flap
                         new Vertex(3.1, 0.2, -2), // 59
                         new Vertex(3.1, 0.5, -2.2), // 60
                         new Vertex(3.1, 0.6, -2.4), // 61
                         new Vertex(3.1, 0.5, -2.6), // 62
                         new Vertex(3.1, 0.2, -2.8), // 63
-                        // Pravý flap
+                        // right flap
                         new Vertex(4.9, 0.2, -2), // 64
                         new Vertex(4.9, 0.5, -2.2), // 65
                         new Vertex(4.9, 0.6, -2.4), // 66
                         new Vertex(4.9, 0.5, -2.6), // 67
                         new Vertex(4.9, 0.2, -2.8), // 68
 
-                        // Motorová sekce (8 bodů)
+                        // engine section
                         new Vertex(4.5, 0, -3.5), // 69
                         new Vertex(4.35, 0.35, -3.5), // 70
                         new Vertex(4, 0.5, -3.5), // 71
@@ -112,13 +112,12 @@ public class Starship extends Object3D {
                         new Vertex(4, -0.5, -3.5), // 75
                         new Vertex(4.35, -0.35, -3.5), // 76
 
-                        // Motory Raptor (6 motorů)
-                        // Centrální motory
+                        // central engines
                         new Vertex(4, 0.1, -3.7), // 77
                         new Vertex(4, 0.1, -4), // 78
                         new Vertex(4, -0.1, -3.7), // 79
                         new Vertex(4, -0.1, -4), // 80
-                        // Vnější motory
+                        // outer engines
                         new Vertex(4.2, 0.2, -3.7), // 81
                         new Vertex(4.2, 0.2, -4), // 82
                         new Vertex(3.8, 0.2, -3.7), // 83
@@ -128,7 +127,7 @@ public class Starship extends Object3D {
                         new Vertex(3.8, -0.2, -3.7), // 87
                         new Vertex(3.8, -0.2, -4), // 88
 
-                        // Servisní panely (detaily na trupu)
+                        // service panels
                         new Vertex(4.51, 0, 2), // 89
                         new Vertex(4.51, 0, 1), // 90
                         new Vertex(4.41, 0, 2), // 91
@@ -141,56 +140,55 @@ public class Starship extends Object3D {
                 ),
                 // index buffer
                 List.of(
-                        // Špička - jemnější napojení
+                        // tip
                         0,1, 0,2, 0,3, 0,4, 0,5, 0,6, 0,7, 0,8,
 
-                        // První kruh nosu
+                        // first ring
                         1,2, 2,3, 3,4, 4,5, 5,6, 6,7, 7,8, 8,1,
 
-                        // Propojení prvního a druhého kruhu
+                        // connection of first and second ring
                         1,9, 2,10, 3,11, 4,12, 5,13, 6,14, 7,15, 8,16,
 
-                        // Druhý kruh
+                        // second ring
                         9,10, 10,11, 11,12, 12,13, 13,14, 14,15, 15,16, 16,9,
 
-                        // Propojení druhého a třetího kruhu
+                        // connection of second and third ring
                         9,17, 10,18, 11,19, 12,20, 13,21, 14,22, 15,23, 16,24,
 
-                        // Třetí kruh
+                        // third ring
                         17,18, 18,19, 19,20, 20,21, 21,22, 22,23, 23,24, 24,17,
 
-                        // Hlavní trup - vertikální linky
+                        // fuselage
                         17,25, 18,26, 19,27, 20,28, 21,29, 22,30, 23,31, 24,32,
                         25,33, 26,34, 27,35, 28,36, 29,37, 30,38, 31,39, 32,40,
                         33,41, 34,42, 35,43, 36,44, 37,45, 38,46, 39,47, 40,48,
 
-                        // Horizontální kruhy trupu
+                        // fuselage
                         25,26, 26,27, 27,28, 28,29, 29,30, 30,31, 31,32, 32,25,
                         33,34, 34,35, 35,36, 36,37, 37,38, 38,39, 39,40, 40,33,
                         41,42, 42,43, 43,44, 44,45, 45,46, 46,47, 47,48, 48,41,
 
-                        // Přední flaps
-                        49,50, 50,51, 51,52, 52,53, // levý
-                        54,55, 55,56, 56,57, 57,58, // pravý
+                        // front flaps
+                        49,50, 50,51, 51,52, 52,53,
+                        54,55, 55,56, 56,57, 57,58,
 
-                        // Zadní flaps
-                        59,60, 60,61, 61,62, 62,63, // levý
-                        64,65, 65,66, 66,67, 67,68, // pravý
+                        // back flaps
+                        59,60, 60,61, 61,62, 62,63,
+                        64,65, 65,66, 66,67, 67,68,
 
-                        // Motorová sekce
+                        // engine section
                         69,70, 70,71, 71,72, 72,73, 73,74, 74,75, 75,76, 76,69,
                         41,69, 42,70, 43,71, 44,72, 45,73, 46,74, 47,75, 48,76,
 
-                        // Motory
-                        77,78, 79,80, // centrální
-                        81,82, 83,84, 85,86, 87,88, // vnější
+                        // engines
+                        77,78, 79,80, // central engines
+                        81,82, 83,84, 85,86, 87,88, // outer engines
 
-                        // Servisní panely
+                        // service panels
                         89,90, 91,92,
                         93,94, 95,96,
 
-                        // Dodatečné detaily trupu
-                        25,33, 29,37, // vertikální linky pro vizuální detail
+                        25,33, 29,37,
                         33,41, 37,45
                 ),
                 modelMat.orElseGet(Mat4Identity::new),

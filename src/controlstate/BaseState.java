@@ -69,10 +69,6 @@ public class BaseState implements Animate, State {
     @Override
     public void keyPressed(KeyEvent e) throws Exception {
         switch (e.getKeyCode()) {
-            case KeyEvent.VK_C:
-                clear();
-                panel.repaint();
-                break;
             case KeyEvent.VK_LEFT:
                 // to the left
                 scene.translateObject(-moveSpeed, AxisEnum.X);
@@ -94,18 +90,22 @@ public class BaseState implements Animate, State {
                 repaintObjects();
                 break;
             case KeyEvent.VK_Q:
+                // rotates object to the right
                 scene.rotateObject(moveSpeed, AxisEnum.Z);
                 repaintObjects();
                 break;
             case KeyEvent.VK_E:
+                // rotates object to the left
                 scene.rotateObject(-moveSpeed, AxisEnum.Z);
                 repaintObjects();
                 break;
             case KeyEvent.VK_R:
+                // scales object up
                 scene.scaleObject(1.1F);
                 repaintObjects();
                 break;
             case KeyEvent.VK_F:
+                // scales object down
                 scene.scaleObject(0.9F);
                 repaintObjects();
                 break;
@@ -128,6 +128,7 @@ public class BaseState implements Animate, State {
                 observerMoveDirection = DirectionEnum.DOWN;
                 break;
             case KeyEvent.VK_I:
+                // toggle rotation of all or selected object
                 scene.toggleRotation();
                 repaintObjects();
                 break;

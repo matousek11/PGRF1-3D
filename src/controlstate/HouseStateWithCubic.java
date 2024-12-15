@@ -13,6 +13,9 @@ import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.util.Optional;
 
+/**
+ * Scene with 3D house and cubic curves around.
+ */
 public class HouseStateWithCubic extends BaseState {
     private int numberOfPointsInCubic = 6;
 

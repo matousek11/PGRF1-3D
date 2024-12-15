@@ -10,15 +10,6 @@ public class Line {
     private final int color;
     private final int thickness;
 
-    public Line(int xStart, int yStart, int xEnd, int yEnd, int color, int thickness) {
-        this.xStart = xStart;
-        this.yStart = yStart;
-        this.xEnd = xEnd;
-        this.yEnd = yEnd;
-        this.color = color;
-        this.thickness = thickness;
-    }
-
     public Line(Point2D startPoint, Point2D endPoint, int color, int thickness) {
         this.xStart = (int) startPoint.getX();
         this.yStart = (int) startPoint.getY();

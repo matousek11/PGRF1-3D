@@ -4,16 +4,19 @@ import transforms.Mat4Identity;
 
 import java.util.List;
 
+/**
+ * Show scale of rockets.
+ */
 public class Axe extends Object3D {
     public Axe() {
         super(
                 // vertex buffer
                 List.of(
-                        // Hlavní osa Y
-                        new Vertex(6, 0, -4), // začátek osy 0
-                        new Vertex(6, 0, 8.5), // konec osy 1
+                        // Y axis
+                        new Vertex(6, 0, -4),
+                        new Vertex(6, 0, 8.5),
 
-                        // Značky po 10 metrech (každých ~0.7 jednotky)
+                        // 10m steep
                         // 0m
                         new Vertex(5.9, 0, -4), // 2
                         new Vertex(6.1, 0, -4), // 3
@@ -56,10 +59,7 @@ public class Axe extends Object3D {
                 ),
                 // index buffer
                 List.of(
-                        // Hlavní osa
-                        0,1,
-
-                        // Značky měřítka
+                        // main axis
                         2,3,  // 0m
                         4,5,  // 10m
                         6,7,  // 20m

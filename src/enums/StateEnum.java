@@ -1,5 +1,8 @@
 package enums;
 
+/**
+ * Defines how to switch scenes.
+ */
 public enum StateEnum {
     HOUSE,
     HOUSE_WITH_CUBIC,

@@ -39,6 +39,12 @@ public class CameraService extends transforms.Camera {
         };
     }
 
+    /**
+     * Calculates vertical angle to origin (zenith)
+     *
+     * @param observerPosition current position of observer
+     * @return angle in radians to center
+     */
     protected double zenithToOrigin(Vec3D observerPosition) {
         Vec3D viewVector = observerPosition.opposite();
         return -viewVector
@@ -47,6 +53,12 @@ public class CameraService extends transforms.Camera {
                 .orElse(0.0);
     }
 
+    /**
+     * Calculates horizontal angle to origin (azimuth).
+     *
+     * @param observerPosition current position of observer
+     * @return angle in radians to center
+     */
     protected double azimuthToOrigin(Vec3D observerPosition) {
         Vec3D viewVector = observerPosition.opposite();
         return viewVector

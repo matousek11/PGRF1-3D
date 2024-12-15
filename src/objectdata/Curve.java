@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Defines curve for scenes.
+ */
 public class Curve extends Object3D {
     private final Point3D[] controlPoints;
     private final int numberOfPoints;

@@ -11,6 +11,9 @@ import transforms.Vec3D;
 import javax.swing.*;
 import java.util.Optional;
 
+/**
+ * Scene with two rockets that are rotating and will lift off in few seconds.
+ */
 public class RocketsState extends BaseState {
     private int startTime = 0;
 

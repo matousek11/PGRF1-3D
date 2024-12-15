@@ -6,6 +6,9 @@ import transforms.Mat4Identity;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * 3D pyramid for scenes.
+ */
 public class Pyramid extends Object3D {
     public Pyramid(Optional<Mat4> modelMat, Optional<Integer> color) {
         super(

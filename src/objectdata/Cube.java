@@ -5,6 +5,9 @@ import transforms.Mat4Identity;
 
 import java.util.List;
 
+/**
+ * Basic 3D cube object.
+ */
 public class Cube extends Object3D {
     public Cube(Mat4 modelMat, int color) {
         super(

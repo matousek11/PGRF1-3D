@@ -19,5 +19,8 @@ public interface State {
 
     void keyReleased(KeyEvent e);
 
+    /**
+     * Is called 60 times per second to calculate camera motion.
+     */
     void moveCamera();
 }

@@ -5,6 +5,9 @@ import enums.AxisEnum;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * Defines scene where objects are rendered and processed.
+ */
 public class Scene {
     private final ArrayList<Object3D> objects;
     protected int selectedObjectIndex = 0;
@@ -21,6 +24,9 @@ public class Scene {
         return objects;
     }
 
+    /**
+     * Selects upcoming object from scene in order to be moved or rotated.
+     */
     public void selectNextObject() {
         ArrayList<Object3D> objects = getObjects();
         int objectIndex = selectedObjectIndex;
@@ -35,6 +41,12 @@ public class Scene {
         }
     }
 
+    /**
+     * Calculates index of next object that can be edited.
+     * If last object was selected 0 is returned which means all objects will be edited.
+     *
+     * @return index of upcoming object which can be edited.
+     */
     private int calculateNextObjectIndex() {
         ArrayList<Object3D> objects = getObjects();
 
@@ -54,15 +66,27 @@ public class Scene {
         }
     }
 
-    public void translateObject(float scale, AxisEnum axis) {
+    /**
+     * Translates all objects in scene if selected object index is 0 and just one object if selected object index is not 0.
+     *
+     * @param translation defines how much object will be moved.
+     * @param axis defines on which axis is object moved.
+     */
+    public void translateObject(float translation, AxisEnum axis) {
         if (selectedObjectIndex == 0) {
-            translateAllObjects(scale, axis);
+            translateAllObjects(translation, axis);
             return;
         }
 
-        translateSelectedObject(scale, axis, Optional.empty());
+        translateSelectedObject(translation, axis, Optional.empty());
     }
 
+    /**
+     * Rotates all objects in scene if selected object index is 0 and just one object if selected object index is not 0.
+     *
+     * @param angle in radians by which object will be rotated. Object is rotated counter-clockwise
+     * @param axis defines around which axis will be object rotated
+     */
     public void rotateObject(float angle, AxisEnum axis) {
         if (selectedObjectIndex == 0) {
             rotateAllObjects(angle, axis);
@@ -72,6 +96,11 @@ public class Scene {
         rotateSelectedObject(angle, axis, Optional.empty());
     }
 
+    /**
+     * Scales all objects in scene if selected object index is 0 and just one object if selected object index is not 0.
+     *
+     * @param scale how much will be object scaled
+     */
     public void scaleObject(float scale) {
         if (selectedObjectIndex == 0) {
             scaleAllObjects(scale);
@@ -81,6 +110,12 @@ public class Scene {
         scaleSelectedObject(scale, Optional.empty());
     }
 
+    /**
+     * Changes curve accuracy of all curves in scene if selected object index is 0
+     * and just one curve if selected object index is not 0.
+     *
+     * @param numberOfPointsChange by how much should current number of points change (derivative)
+     */
     public void changeCurveAccuracy(int numberOfPointsChange) {
         if (selectedObjectIndex == 0) {
             changeAllCurvesAccuracy(numberOfPointsChange);
@@ -90,6 +125,10 @@ public class Scene {
         changeCurveAccuracy(numberOfPointsChange, Optional.empty());
     }
 
+    /**
+     * Toggle automatic rotation of all objects in scene if selected object index is 0 and
+     * just one object if selected object index is not 0.
+     */
     public void toggleRotation() {
         if (selectedObjectIndex == 0) {
             toggleAllObjectsRotation();
@@ -99,16 +138,16 @@ public class Scene {
         toggleSelectedObjectRotation(Optional.empty());
     }
 
-    private void translateSelectedObject(float scale, AxisEnum axis, Optional<Integer> objectIndex) {
+    private void translateSelectedObject(float translation, AxisEnum axis, Optional<Integer> objectIndex) {
         Object3D object = objects.get(objectIndex.orElse(selectedObjectIndex));
         if (!object.isCanBeMoved()) {
             return;
         }
 
         object = object.translate(
-                axis == AxisEnum.X ? scale : 0,
-                axis == AxisEnum.Y ? scale : 0,
-                axis == AxisEnum.Z ? scale : 0
+                axis == AxisEnum.X ? translation : 0,
+                axis == AxisEnum.Y ? translation : 0,
+                axis == AxisEnum.Z ? translation : 0
         );
         objects.set(objectIndex.orElse(selectedObjectIndex), object);
     }
@@ -157,9 +196,9 @@ public class Scene {
         objects.set(objectIndex.orElse(selectedObjectIndex), object);
     }
 
-    public void translateAllObjects(float scale, AxisEnum axis) {
+    public void translateAllObjects(float translation, AxisEnum axis) {
         for (int i = 0; i < objects.size(); i++) {
-            translateSelectedObject(scale, axis, Optional.of(i));
+            translateSelectedObject(translation, axis, Optional.of(i));
         }
     }
 

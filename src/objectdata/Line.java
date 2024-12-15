@@ -5,6 +5,9 @@ import transforms.Mat4Identity;
 
 import java.util.List;
 
+/**
+ * 3D line for scenes.
+ */
 public class Line extends Object3D {
     public Line(Vertex startPoint, Vertex endPoint, int color, boolean canBeMoved) {
         super(

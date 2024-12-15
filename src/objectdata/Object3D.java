@@ -7,6 +7,9 @@ import transforms.Point3D;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Base model for every 3D object in scene.
+ */
 public class Object3D implements Object {
     private final List<Vertex> vertexBuffer;
     private final List<Integer> indexBuffer;
